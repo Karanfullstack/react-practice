@@ -12,7 +12,7 @@ import {Home, About, Contact, User, Github} from "./components";
 import {githubInfoLoader} from "./components/Github/Github";
 
 // First Way of Routing
-const router = createBrowserRouter([
+const router2 = createBrowserRouter([
 	{
 		path: "/",
 		element: <Layout />,
@@ -34,7 +34,7 @@ const router = createBrowserRouter([
 ]);
 
 // Second Way of Routing
-const router2 = createBrowserRouter(
+const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route path="/" element={<Layout />}>
 			<Route path="" element={<Home />} />
@@ -47,6 +47,6 @@ const router2 = createBrowserRouter(
 );
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
-		<RouterProvider router={router2} />
+		<RouterProvider router={router} />
 	</React.StrictMode>
 );
