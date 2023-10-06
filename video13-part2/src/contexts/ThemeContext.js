@@ -1,6 +1,8 @@
-import {useContext, createContext} from "react";
+import {createContext, useContext} from "react";
 
-export const ThemeContext = createContext();
+export const ThemeContext = createContext({
+	darkMode: () => {},
+});
 
 export const ThemeProvider = ThemeContext.Provider;
 
