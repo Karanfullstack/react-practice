@@ -1,67 +1,47 @@
-import React, {useEffect, useState} from "react";
-import {TodoProvider} from "./contexts";
+import {useEffect, useState} from "react";
 import {TodoForm, TodoList} from "./components";
-
+import {TodoProvider} from "./contexts/index";
 const App = () => {
 	const [todos, setTodos] = useState([]);
 
-	// @AddTodo
 	const addTodo = (todo) => {
-		setTodos((prev) => [...prev, {id: Date.now(), ...todo}]);
+		setTodos((prev) => [...prev, {id: Date.now(), ...todo, completed: false}]);
 	};
-
-	// @UpdateTodo
-	const updateTodo = (todo, id) => {
-		setTodos((prev) =>
-			prev.map((prevTodo) => (prevTodo.id === id ? todo : prevTodo))
-		);
-	};
-
-	// @DeleteTodo
 	const deleteTodo = (id) => {
 		setTodos((prev) => prev.filter((prevTodo) => prevTodo.id !== id));
 	};
 
-	// @ToggleComplete
-	const toggleComplete = (id) => {
+	const toogleTodo = (id) => {
 		setTodos((prev) =>
-			prev.map((prevTodo) =>
-				prevTodo.id === id
-					? {...prevTodo, completed: !prevTodo.completed}
-					: prevTodo
+			prev.map((item) =>
+				item.id === id ? {...item, completed: !item.completed} : item
 			)
 		);
 	};
 
-	// Get todos from localstorage
 	useEffect(() => {
 		const todos = JSON.parse(localStorage.getItem("todos"));
+
 		if (todos && todos.length > 0) {
 			setTodos(todos);
 		}
 	}, []);
 
-	// Set todos to localstroage
 	useEffect(() => {
 		localStorage.setItem("todos", JSON.stringify(todos));
 	}, [todos]);
-
 	return (
-		<TodoProvider
-			value={{todos, addTodo, deleteTodo, updateTodo, toggleComplete}}
-		>
-			<div className="bg-[#172842] min-h-screen py-8">
-				<div className="w-full max-w-2xl mx-auto shadow-md rounded-lg px-4 py-3 text-white">
-					<h1 className="text-2xl font-bold text-center mb-8 mt-2">
-						Manage Your Todos
-					</h1>
-					<div className="mb-4">
-						<TodoForm />
-					</div>
-					<div className="flex flex-wrap gap-y-3">
+		<TodoProvider value={{todos, setTodos, addTodo, toogleTodo, deleteTodo}}>
+			<div className=" bg-gray-800 max-h-screen py-8">
+				<div className="w-full max-w-2xl mx-auto text-white ">
+					<h1 className="text-center mb-6 text-2xl">Manage Your Todos</h1>
+					{/* Todo Form */}
+					<TodoForm />
+					<div className="flex flex-wrap gap-y-3 mt-4">
+						{/* Todo list */}
 						{todos.map((item) => (
-							<div className="w-full" key={item.id}>
-								<TodoList todo={item}/>
+							<div key={item.id} className="w-full duration-300">
+								<TodoList todo={item} />
 							</div>
 						))}
 					</div>

@@ -1,29 +1,61 @@
-import React from "react";
+import {useState} from "react";
+import {AiFillDelete, AiFillEdit, AiFillSave} from "react-icons/ai";
+import {useTodo} from "../contexts";
+const TodoList = ({todo}) => {
+	const [isEdit, setIsEdit] = useState(false);
+	const [newTodo, setNewTodo] = useState(todo.todo);
+	const {deleteTodo, toogleTodo, setTodos} = useTodo();
 
-function TodoList({todo}) {
+	const updateTodo = () => {
+		setTodos((prev) =>
+			prev.map((item) =>
+				item.id === todo.id ? {...item, todo: newTodo} : item
+			)
+		);
+	};
+
+	const toogleComplete = () => {
+		toogleTodo(todo.id);
+	};
+
 	return (
-		<div
-			className={`flex border border-black/10 rounded-lg px-3 py-1.5 gap-x-3 shadow-sm shadow-white/50 duration-300  text-black ${
-				todo.completed ? "bg-[#c6e9a7]" : "bg-[#ccbed7]"
-			}`}
-		>
-			<input type="checkbox" className="cursor-pointer mt-3 w-6" />
+		<div className="flex w-full border-black/10 rounded-lg px-3 py-2 gap-x-3 shadow-lg   text-white">
+			<input
+				type="checkbox"
+				className=" cursor-pointer mt-5 scale-150"
+				checked={todo.completed}
+				onChange={toogleComplete}
+			/>
 			<input
 				type="text"
-				className={`border outline-none w-full bg-transparent rounded-lg ${
-					isEdit ? "border-black/10 px-2" : "border-transparent"
-				} ${todo.completed ? "line-through" : ""}`}
+				className={`text-2xl ${
+					isEdit ? " border border-gray-500" : ""
+				} outline-none w-full bg-transparent rounded-lg py-2 px-2 duration-200 ${
+					todo.completed && "border-0 line-through bg-red-400 bg-transparent"
+				}`}
+				readOnly={!isEdit}
+				value={newTodo}
+				onChange={(e) => setNewTodo(e.target.value)}
 			/>
-			{/* Edit, Save Button */}
-			<button className="inline-flex w-8 h-8 rounded-lg text-sm border border-black/10 justify-center items-center bg-gray-50 hover:bg-gray-100 shrink-0 disabled:opacity-50">
-				{isEdit ? "📁" : "✏️"}
+			<button
+				onClick={() => {
+					if (todo.completed) return;
+					isEdit
+						? updateTodo() ?? setIsEdit(false)
+						: setIsEdit((prev) => !prev);
+				}}
+				className="text-3xl text-green-500"
+			>
+				{isEdit ? <AiFillSave /> : <AiFillEdit />}
 			</button>
-			{/* Delete Todo Button */}
-			<button className="inline-flex w-8 h-8 rounded-lg text-sm border border-black/10 justify-center items-center bg-gray-50 hover:bg-gray-100 shrink-0">
-				❌
+			<button
+				onClick={() => deleteTodo(todo.id)}
+				className="text-3xl text-red-400"
+			>
+				<AiFillDelete />
 			</button>
 		</div>
 	);
-}
+};
 
 export default TodoList;
