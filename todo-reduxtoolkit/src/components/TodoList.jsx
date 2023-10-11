@@ -1,10 +1,12 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {removeTodo} from "../features/todo/todoSlice";
 
 const TodoList = ({handelEditClick, isEdit, editTodo}) => {
 	const todos = useSelector((state) => state.todos);
+	
 	const dispatch = useDispatch();
+
 	return (
 		<div>
 			{todos.map((item) => (
@@ -12,7 +14,7 @@ const TodoList = ({handelEditClick, isEdit, editTodo}) => {
 					key={item.id}
 					className="max-w-[600px]   0 m-auto  mt-4 flex justify-between gap-2 duration-300 "
 				>
-					<div className="bg-transparent rounded-md w-full bg-gray-800 flex justify-between items-center">
+					<div className="bg-transparent rounded-md w-full bg-gray-900 flex justify-between items-center">
 						<span className="text-white px-3 text-xl">{item.text}</span>
 					</div>
 					<div className="flex justify-between gap-2">

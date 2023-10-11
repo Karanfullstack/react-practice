@@ -4,7 +4,7 @@ import {TodoList, TodoForm} from "./components";
 const App = () => {
 	const [isEdit, setIsEdit] = useState(false);
 	const [editTodo, setEditTodo] = useState({});
-
+	
 	function handelEditClick(todo) {
 		setIsEdit((prev) => !prev);
 		setEditTodo(todo);
